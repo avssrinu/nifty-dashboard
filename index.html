@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>NIFTY OPTIONS DASHBOARD</title>
+
+<style>
+
+body{
+background:#0f172a;
+color:white;
+font-family:Arial;
+text-align:center;
+}
+
+h1{
+color:#22c55e;
+}
+
+table{
+border-collapse:collapse;
+margin:auto;
+width:80%;
+}
+
+td,th{
+border:1px solid #334155;
+padding:6px;
+}
+
+th{
+background:#1e293b;
+}
+
+.call{
+color:#ef4444;
+}
+
+.put{
+color:#22c55e;
+}
+
+.box{
+display:inline-block;
+background:#1e293b;
+padding:10px;
+margin:10px;
+border-radius:6px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<h1>NIFTY OPTION DASHBOARD</h1>
+
+<div class="box">ATM: <span id="atm"></span></div>
+<div class="box">Support: <span id="support"></span></div>
+<div class="box">Resistance: <span id="resistance"></span></div>
+<div class="box">PCR: <span id="pcr"></span></div>
+
+<br><br>
+
+<table id="optionTable">
+
+<tr>
+<th>Strike</th>
+<th>Call OI</th>
+<th>Put OI</th>
+</tr>
+
+</table>
+
+<script>
+
+async function loadData(){
+
+let url="https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY";
+
+let res=await fetch(url);
+
+let json=await res.json();
+
+let rows=json.records.data;
+
+let table=document.getElementById("optionTable");
+
+let maxCall=0;
+let maxPut=0;
+let callStrike=0;
+let putStrike=0;
+
+let callSum=0;
+let putSum=0;
+
+rows.forEach(r=>{
+
+if(r.CE && r.PE){
+
+let strike=r.strikePrice;
+
+let callOI=r.CE.openInterest;
+
+let putOI=r.PE.openInterest;
+
+callSum+=callOI;
+putSum+=putOI;
+
+if(callOI>maxCall){
+maxCall=callOI;
+callStrike=strike;
+}
+
+if(putOI>maxPut){
+maxPut=putOI;
+putStrike=strike;
+}
+
+let tr=document.createElement("tr");
+
+tr.innerHTML=
+"<td>"+strike+"</td>"+
+"<td class='call'>"+callOI+"</td>"+
+"<td class='put'>"+putOI+"</td>";
+
+table.appendChild(tr);
+
+}
+
+});
+
+let pcr=(putSum/callSum).toFixed(2);
+
+document.getElementById("support").innerText=putStrike;
+document.getElementById("resistance").innerText=callStrike;
+document.getElementById("pcr").innerText=pcr;
+
+}
+
+loadData();
+
+setInterval(loadData,60000);
+
+</script>
+
+</body>
+
+</html>
