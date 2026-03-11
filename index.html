@@ -195,24 +195,24 @@ NIFTY OPTIONS PRO TERMINAL V3
 
 <script>
 
+<script>
+
 async function update(){
 
 try{
 
-let response = await fetch(
-"https://api.allorigins.win/raw?url=https://query1.finance.yahoo.com/v7/finance/quote?symbols=%5ENSEI"
-)
+let response = await fetch("https://api.allorigins.win/raw?url=https://query1.finance.yahoo.com/v8/finance/chart/%5ENSEI")
 
 let data = await response.json()
 
-let nifty = data.quoteResponse.result[0].regularMarketPrice
+let nifty = data.chart.result[0].meta.regularMarketPrice
 
 let atm = Math.round(nifty/50)*50
 
 let support = atm - 200
 let resistance = atm + 200
 
-let pcr = 0.95
+let pcr = 0.96
 let maxpain = atm
 
 let rangeLow = atm - 200
@@ -237,12 +237,11 @@ signal="BUY PUT"
 document.getElementById("signal").innerText = signal
 
 let d = new Date()
-
 document.getElementById("time").innerText = d.toLocaleTimeString()
 
 }catch(e){
 
-console.log("Price fetch error")
+console.log("Data error",e)
 
 }
 
@@ -252,7 +251,7 @@ update()
 
 setInterval(update,60000)
 
-</script>
+</script></script>
 </script>
 
 </body>
