@@ -2,29 +2,26 @@
 <html>
 
 <head>
+
 <title>NIFTY OPTION DASHBOARD</title>
 
 <style>
 
 body{
-font-family:Arial;
-background:#111;
+background:#0f172a;
 color:white;
+font-family:Arial;
 text-align:center;
 }
 
-table{
-border-collapse:collapse;
-margin:auto;
+h1{
+color:#22c55e;
 }
 
-td,th{
-border:1px solid #444;
-padding:6px;
-}
-
-th{
-background:#333;
+iframe{
+border:none;
+width:95%;
+height:800px;
 }
 
 </style>
@@ -33,46 +30,9 @@ background:#333;
 
 <body>
 
-<h2>NIFTY OPTION CHAIN</h2>
+<h1>NIFTY OPTION CHAIN LIVE</h1>
 
-<table id="optionTable">
-<tr>
-<th>Strike</th>
-<th>Call OI</th>
-<th>Put OI</th>
-</tr>
-</table>
-
-<script>
-
-async function loadData(){
-
-let url="https://cdn.jsdelivr.net/gh/iam-veeramalla/nse-data/option-chain-nifty.json";
-
-let response=await fetch(url);
-
-let data=await response.json();
-
-let table=document.getElementById("optionTable");
-
-data.data.forEach(row=>{
-
-let tr=document.createElement("tr");
-
-tr.innerHTML=
-"<td>"+row.strike+"</td>"+
-"<td>"+row.callOI+"</td>"+
-"<td>"+row.putOI+"</td>";
-
-table.appendChild(tr);
-
-});
-
-}
-
-loadData();
-
-</script>
+<iframe src="https://www.moneycontrol.com/india/indexfutures/nifty/9/2024-06-27/OPTIDX/CE/24200"></iframe>
 
 </body>
 
