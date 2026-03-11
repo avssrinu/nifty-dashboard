@@ -3,7 +3,7 @@
 
 <head>
 
-<title>NIFTY ADVANCED OPTIONS DASHBOARD</title>
+<title>NIFTY OPTIONS PRO TERMINAL</title>
 
 <style>
 
@@ -18,14 +18,14 @@ margin:0;
 background:#0f172a;
 padding:15px;
 text-align:center;
-font-size:26px;
+font-size:28px;
 font-weight:bold;
 color:#22c55e;
 }
 
 .grid{
 display:grid;
-grid-template-columns:repeat(4,1fr);
+grid-template-columns:repeat(5,1fr);
 gap:15px;
 padding:20px;
 }
@@ -95,7 +95,7 @@ height:800px;
 
 <div class="header">
 
-NIFTY PRO OPTIONS TERMINAL
+NIFTY OPTIONS PRO TERMINAL V3
 
 </div>
 
@@ -107,7 +107,7 @@ NIFTY PRO OPTIONS TERMINAL
 </div>
 
 <div class="card">
-<div class="label">ATM STRIKE</div>
+<div class="label">ATM</div>
 <div id="atm" class="value"></div>
 </div>
 
@@ -137,8 +137,18 @@ NIFTY PRO OPTIONS TERMINAL
 </div>
 
 <div class="card">
-<div class="label">MARKET BIAS</div>
+<div class="label">BIAS</div>
 <div id="bias" class="value"></div>
+</div>
+
+<div class="card">
+<div class="label">SIGNAL</div>
+<div id="signal" class="value"></div>
+</div>
+
+<div class="card">
+<div class="label">UPDATE</div>
+<div id="time" class="value"></div>
 </div>
 
 </div>
@@ -160,19 +170,19 @@ NIFTY PRO OPTIONS TERMINAL
 <tr>
 <td>24100</td>
 <td style="color:red">2.1M</td>
-<td style="color:green">1.2M</td>
+<td style="color:green">1.4M</td>
 </tr>
 
 <tr>
 <td>24200</td>
-<td style="color:red">2.9M</td>
-<td style="color:green">1.8M</td>
+<td style="color:red">3.2M</td>
+<td style="color:green">2.0M</td>
 </tr>
 
 <tr>
 <td>24300</td>
-<td style="color:red">3.6M</td>
-<td style="color:green">0.9M</td>
+<td style="color:red">3.9M</td>
+<td style="color:green">0.8M</td>
 </tr>
 
 </table>
@@ -185,7 +195,7 @@ NIFTY PRO OPTIONS TERMINAL
 
 function update(){
 
-let nifty=24215
+let nifty=24230
 
 let atm=Math.round(nifty/50)*50
 
@@ -193,12 +203,12 @@ let support=24000
 
 let resistance=24300
 
-let pcr=0.95
+let pcr=0.96
 
 let maxpain=24200
 
 let rangeLow=24000
-let rangeHigh=24400
+let rangeHigh=24450
 
 document.getElementById("nifty").innerText=nifty
 document.getElementById("atm").innerText=atm
@@ -208,17 +218,27 @@ document.getElementById("pcr").innerText=pcr
 document.getElementById("maxpain").innerText=maxpain
 document.getElementById("range").innerText=rangeLow+" - "+rangeHigh
 
-if(pcr>1){
+let signal="WAIT"
 
+if(nifty>atm){
+signal="BUY CALL"
+}else{
+signal="BUY PUT"
+}
+
+document.getElementById("signal").innerText=signal
+
+if(pcr>1){
 document.getElementById("bias").innerHTML="<span class='green'>BULLISH</span>"
 document.getElementById("sentiment").style.width="70%"
-
 }else{
-
 document.getElementById("bias").innerHTML="<span class='red'>BEARISH</span>"
-document.getElementById("sentiment").style.width="35%"
-
+document.getElementById("sentiment").style.width="40%"
 }
+
+let d=new Date()
+
+document.getElementById("time").innerText=d.toLocaleTimeString()
 
 }
 
