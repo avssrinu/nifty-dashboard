@@ -193,59 +193,66 @@ NIFTY OPTIONS PRO TERMINAL V3
 
 <script>
 
-function update(){
+<script>
 
-let nifty=24230
+async function update(){
 
-let atm=Math.round(nifty/50)*50
+try{
 
-let support=24000
+let response = await fetch(
+"https://api.allorigins.win/raw?url=https://query1.finance.yahoo.com/v7/finance/quote?symbols=%5ENSEI"
+)
 
-let resistance=24300
+let data = await response.json()
 
-let pcr=0.96
+let nifty = data.quoteResponse.result[0].regularMarketPrice
 
-let maxpain=24200
+let atm = Math.round(nifty/50)*50
 
-let rangeLow=24000
-let rangeHigh=24450
+let support = atm - 200
+let resistance = atm + 200
 
-document.getElementById("nifty").innerText=nifty
-document.getElementById("atm").innerText=atm
-document.getElementById("support").innerText=support
-document.getElementById("resistance").innerText=resistance
-document.getElementById("pcr").innerText=pcr
-document.getElementById("maxpain").innerText=maxpain
-document.getElementById("range").innerText=rangeLow+" - "+rangeHigh
+let pcr = 0.95
+let maxpain = atm
+
+let rangeLow = atm - 200
+let rangeHigh = atm + 200
+
+document.getElementById("nifty").innerText = nifty.toFixed(2)
+document.getElementById("atm").innerText = atm
+document.getElementById("support").innerText = support
+document.getElementById("resistance").innerText = resistance
+document.getElementById("pcr").innerText = pcr
+document.getElementById("maxpain").innerText = maxpain
+document.getElementById("range").innerText = rangeLow + " - " + rangeHigh
 
 let signal="WAIT"
 
-if(nifty>atm){
+if(nifty > atm){
 signal="BUY CALL"
 }else{
 signal="BUY PUT"
 }
 
-document.getElementById("signal").innerText=signal
+document.getElementById("signal").innerText = signal
 
-if(pcr>1){
-document.getElementById("bias").innerHTML="<span class='green'>BULLISH</span>"
-document.getElementById("sentiment").style.width="70%"
-}else{
-document.getElementById("bias").innerHTML="<span class='red'>BEARISH</span>"
-document.getElementById("sentiment").style.width="40%"
+let d = new Date()
+
+document.getElementById("time").innerText = d.toLocaleTimeString()
+
+}catch(e){
+
+console.log("Price fetch error")
+
 }
-
-let d=new Date()
-
-document.getElementById("time").innerText=d.toLocaleTimeString()
 
 }
 
 update()
 
-setInterval(update,30000)
+setInterval(update,60000)
 
+</script>
 </script>
 
 </body>
