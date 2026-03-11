@@ -197,15 +197,11 @@ NIFTY OPTIONS PRO TERMINAL V3
 
 <script>
 
-async function update(){
+<script>
 
-try{
+function update(){
 
-let response = await fetch("https://api.allorigins.win/raw?url=https://query1.finance.yahoo.com/v8/finance/chart/%5ENSEI")
-
-let data = await response.json()
-
-let nifty = data.chart.result[0].meta.regularMarketPrice
+let nifty = 23896
 
 let atm = Math.round(nifty/50)*50
 
@@ -218,40 +214,25 @@ let maxpain = atm
 let rangeLow = atm - 200
 let rangeHigh = atm + 200
 
-document.getElementById("nifty").innerText = nifty.toFixed(2)
-document.getElementById("atm").innerText = atm
-document.getElementById("support").innerText = support
-document.getElementById("resistance").innerText = resistance
-document.getElementById("pcr").innerText = pcr
-document.getElementById("maxpain").innerText = maxpain
-document.getElementById("range").innerText = rangeLow + " - " + rangeHigh
+document.getElementById("nifty").innerHTML = nifty
+document.getElementById("atm").innerHTML = atm
+document.getElementById("support").innerHTML = support
+document.getElementById("resistance").innerHTML = resistance
+document.getElementById("pcr").innerHTML = pcr
+document.getElementById("maxpain").innerHTML = maxpain
+document.getElementById("range").innerHTML = rangeLow + " - " + rangeHigh
 
-let signal="WAIT"
-
-if(nifty > atm){
-signal="BUY CALL"
-}else{
-signal="BUY PUT"
-}
-
-document.getElementById("signal").innerText = signal
+document.getElementById("bias").innerHTML = "Neutral"
+document.getElementById("signal").innerHTML = "Wait"
 
 let d = new Date()
-document.getElementById("time").innerText = d.toLocaleTimeString()
-
-}catch(e){
-
-console.log("Data error",e)
-
-}
+document.getElementById("time").innerHTML = d.toLocaleTimeString()
 
 }
 
 update()
 
-setInterval(update,60000)
-
-</script></script>
+</script>
 </script>
 
 </body>
