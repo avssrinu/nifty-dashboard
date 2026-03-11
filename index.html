@@ -75,19 +75,18 @@ border-radius:6px;
 </table>
 
 <script>
-<script>
 
 async function loadOptionChain(){
 
-let url="https://api.allorigins.win/raw?url=https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY";
+let url="https://api.codetabs.com/v1/proxy?quest=https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY";
 
 try{
 
 let response=await fetch(url);
 
-let data=await response.json();
+let json=await response.json();
 
-let rows=data.records.data;
+let rows=json.records.data;
 
 let table=document.getElementById("optionTable");
 
@@ -97,12 +96,18 @@ rows.forEach(r=>{
 
 if(r.CE && r.PE){
 
+let strike=r.strikePrice;
+
+let callOI=r.CE.openInterest;
+
+let putOI=r.PE.openInterest;
+
 let tr=document.createElement("tr");
 
 tr.innerHTML=
-"<td>"+r.strikePrice+"</td>"+
-"<td>"+r.CE.openInterest+"</td>"+
-"<td>"+r.PE.openInterest+"</td>";
+"<td>"+strike+"</td>"+
+"<td>"+callOI+"</td>"+
+"<td>"+putOI+"</td>";
 
 table.appendChild(tr);
 
@@ -112,7 +117,7 @@ table.appendChild(tr);
 
 }catch(e){
 
-console.log("Error loading data",e);
+console.log("Data load error:",e);
 
 }
 
@@ -122,6 +127,7 @@ loadOptionChain();
 
 setInterval(loadOptionChain,60000);
 
+</script>
 </script>
 
 
