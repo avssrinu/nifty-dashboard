@@ -2,51 +2,29 @@
 <html>
 
 <head>
-
-<title>NIFTY OPTIONS DASHBOARD</title>
+<title>NIFTY OPTION DASHBOARD</title>
 
 <style>
 
 body{
-background:#0f172a;
-color:white;
 font-family:Arial;
+background:#111;
+color:white;
 text-align:center;
-}
-
-h1{
-color:#22c55e;
 }
 
 table{
 border-collapse:collapse;
 margin:auto;
-width:80%;
 }
 
 td,th{
-border:1px solid #334155;
+border:1px solid #444;
 padding:6px;
 }
 
 th{
-background:#1e293b;
-}
-
-.call{
-color:#ef4444;
-}
-
-.put{
-color:#22c55e;
-}
-
-.box{
-display:inline-block;
-background:#1e293b;
-padding:10px;
-margin:10px;
-border-radius:6px;
+background:#333;
 }
 
 </style>
@@ -55,80 +33,44 @@ border-radius:6px;
 
 <body>
 
-<h1>NIFTY OPTION DASHBOARD</h1>
-
-<div class="box">ATM: <span id="atm"></span></div>
-<div class="box">Support: <span id="support"></span></div>
-<div class="box">Resistance: <span id="resistance"></span></div>
-<div class="box">PCR: <span id="pcr"></span></div>
-
-<br><br>
+<h2>NIFTY OPTION CHAIN</h2>
 
 <table id="optionTable">
-
 <tr>
 <th>Strike</th>
 <th>Call OI</th>
 <th>Put OI</th>
 </tr>
-
 </table>
 
 <script>
 
-<script>
-
-async function loadOptionChain(){
+async function loadData(){
 
 let url="https://cdn.jsdelivr.net/gh/iam-veeramalla/nse-data/option-chain-nifty.json";
 
-try{
-
 let response=await fetch(url);
 
-let json=await response.json();
-
-let rows=json.data;
+let data=await response.json();
 
 let table=document.getElementById("optionTable");
 
-table.innerHTML="<tr><th>Strike</th><th>Call OI</th><th>Put OI</th></tr>";
-
-rows.forEach(r=>{
-
-let strike=r.strike;
-
-let callOI=r.callOI;
-
-let putOI=r.putOI;
+data.data.forEach(row=>{
 
 let tr=document.createElement("tr");
 
 tr.innerHTML=
-"<td>"+strike+"</td>"+
-"<td>"+callOI+"</td>"+
-"<td>"+putOI+"</td>";
+"<td>"+row.strike+"</td>"+
+"<td>"+row.callOI+"</td>"+
+"<td>"+row.putOI+"</td>";
 
 table.appendChild(tr);
 
 });
 
-}catch(e){
-
-console.log("Error loading data",e);
-
 }
 
-}
-
-loadOptionChain();
-
-setInterval(loadOptionChain,60000);
-
-</script>
-</script>
-</script>
-
+loadData();
 
 </script>
 
