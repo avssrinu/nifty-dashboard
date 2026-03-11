@@ -199,9 +199,10 @@ async function update(){
 
 try{
 
-let response = await fetch(
-"https://query1.finance.yahoo.com/v8/finance/chart/%5ENSEI"
-)
+let url = "https://api.allorigins.win/raw?url=" +
+encodeURIComponent("https://query1.finance.yahoo.com/v8/finance/chart/%5ENSEI")
+
+let response = await fetch(url)
 
 let data = await response.json()
 
@@ -237,12 +238,11 @@ signal = "BUY PUT"
 document.getElementById("signal").innerHTML = signal
 
 let d = new Date()
-
 document.getElementById("time").innerHTML = d.toLocaleTimeString()
 
 }catch(e){
 
-console.log("Price error",e)
+console.log("API Error",e)
 
 }
 
@@ -252,6 +252,7 @@ update()
 
 setInterval(update,60000)
 
+</script>
 </script>
 
 </script>
