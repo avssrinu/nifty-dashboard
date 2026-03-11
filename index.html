@@ -75,56 +75,34 @@ border-radius:6px;
 </table>
 
 <script>
+<script>
 
-async function loadData(){
+async function loadOptionChain(){
 
-let url="https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY";
+let url="https://api.allorigins.win/raw?url=https://www.nseindia.com/api/option-chain-indices?symbol=NIFTY";
 
-let res=await fetch(url);
+try{
 
-let json=await res.json();
+let response=await fetch(url);
 
-let rows=json.records.data;
+let data=await response.json();
+
+let rows=data.records.data;
 
 let table=document.getElementById("optionTable");
 
-let maxCall=0;
-let maxPut=0;
-let callStrike=0;
-let putStrike=0;
-
-let callSum=0;
-let putSum=0;
+table.innerHTML="<tr><th>Strike</th><th>Call OI</th><th>Put OI</th></tr>";
 
 rows.forEach(r=>{
 
 if(r.CE && r.PE){
 
-let strike=r.strikePrice;
-
-let callOI=r.CE.openInterest;
-
-let putOI=r.PE.openInterest;
-
-callSum+=callOI;
-putSum+=putOI;
-
-if(callOI>maxCall){
-maxCall=callOI;
-callStrike=strike;
-}
-
-if(putOI>maxPut){
-maxPut=putOI;
-putStrike=strike;
-}
-
 let tr=document.createElement("tr");
 
 tr.innerHTML=
-"<td>"+strike+"</td>"+
-"<td class='call'>"+callOI+"</td>"+
-"<td class='put'>"+putOI+"</td>";
+"<td>"+r.strikePrice+"</td>"+
+"<td>"+r.CE.openInterest+"</td>"+
+"<td>"+r.PE.openInterest+"</td>";
 
 table.appendChild(tr);
 
@@ -132,17 +110,20 @@ table.appendChild(tr);
 
 });
 
-let pcr=(putSum/callSum).toFixed(2);
+}catch(e){
 
-document.getElementById("support").innerText=putStrike;
-document.getElementById("resistance").innerText=callStrike;
-document.getElementById("pcr").innerText=pcr;
+console.log("Error loading data",e);
 
 }
 
-loadData();
+}
 
-setInterval(loadData,60000);
+loadOptionChain();
+
+setInterval(loadOptionChain,60000);
+
+</script>
+
 
 </script>
 
