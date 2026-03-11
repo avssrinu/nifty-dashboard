@@ -193,56 +193,36 @@ NIFTY OPTIONS PRO TERMINAL V3
 
 <script>
 
-<script>
-
 async function update(){
 
 try{
 
-let url = "https://api.allorigins.win/raw?url=" +
-encodeURIComponent("https://query1.finance.yahoo.com/v8/finance/chart/%5ENSEI")
+const url =
+"https://api.allorigins.win/raw?url=https://query1.finance.yahoo.com/v7/finance/quote?symbols=%5ENSEI"
 
-let response = await fetch(url)
+const response = await fetch(url)
 
-let data = await response.json()
+const data = await response.json()
 
-let nifty = data.chart.result[0].meta.regularMarketPrice
+const nifty = data.quoteResponse.result[0].regularMarketPrice
 
-let atm = Math.round(nifty/50)*50
+const atm = Math.round(nifty/50)*50
 
-let support = atm - 200
-let resistance = atm + 200
+document.getElementById("nifty").innerText = nifty.toFixed(2)
+document.getElementById("atm").innerText = atm
+document.getElementById("support").innerText = atm-200
+document.getElementById("resistance").innerText = atm+200
+document.getElementById("pcr").innerText = "0.95"
+document.getElementById("maxpain").innerText = atm
+document.getElementById("range").innerText = (atm-200)+" - "+(atm+200)
+document.getElementById("signal").innerText = "WAIT"
 
-let pcr = 0.96
-let maxpain = atm
+document.getElementById("time").innerText =
+new Date().toLocaleTimeString()
 
-let rangeLow = atm - 200
-let rangeHigh = atm + 200
+}catch(err){
 
-document.getElementById("nifty").innerHTML = nifty.toFixed(2)
-document.getElementById("atm").innerHTML = atm
-document.getElementById("support").innerHTML = support
-document.getElementById("resistance").innerHTML = resistance
-document.getElementById("pcr").innerHTML = pcr
-document.getElementById("maxpain").innerHTML = maxpain
-document.getElementById("range").innerHTML = rangeLow + " - " + rangeHigh
-
-let signal = "WAIT"
-
-if(nifty > atm){
-signal = "BUY CALL"
-}else{
-signal = "BUY PUT"
-}
-
-document.getElementById("signal").innerHTML = signal
-
-let d = new Date()
-document.getElementById("time").innerHTML = d.toLocaleTimeString()
-
-}catch(e){
-
-console.log("API Error",e)
+console.log(err)
 
 }
 
@@ -252,10 +232,6 @@ update()
 
 setInterval(update,60000)
 
-</script>
-</script>
-
-</script>
 </script>
 
 </body>
