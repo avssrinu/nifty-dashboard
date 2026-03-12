@@ -3,7 +3,7 @@
 
 <head>
 
-<title>NIFTY OPTIONS PRO TERMINAL</title>
+<title>NIFTY OPTIONS DASHBOARD</title>
 
 <style>
 
@@ -25,66 +25,28 @@ color:#22c55e;
 
 .grid{
 display:grid;
-grid-template-columns:repeat(5,1fr);
+grid-template-columns:repeat(4,1fr);
 gap:15px;
 padding:20px;
 }
 
 .card{
 background:#1e293b;
-padding:18px;
+padding:20px;
 border-radius:10px;
 text-align:center;
 }
 
-.label{
-font-size:14px;
+.card h3{
+margin:0;
+font-size:16px;
 color:#94a3b8;
 }
 
-.value{
-font-size:26px;
-font-weight:bold;
-margin-top:5px;
-}
-
-.green{color:#22c55e}
-.red{color:#ef4444}
-
-.meter{
-height:22px;
-background:#334155;
-border-radius:10px;
-overflow:hidden;
-margin:20px;
-}
-
-.fill{
-height:100%;
-background:#22c55e;
-width:50%;
-}
-
-.table{
-margin:20px;
-width:95%;
-border-collapse:collapse;
-}
-
-.table th{
-background:#1e293b;
-padding:10px;
-}
-
-.table td{
-padding:8px;
-text-align:center;
-}
-
 iframe{
-border:none;
 width:100%;
-height:800px;
+height:700px;
+border:none;
 }
 
 </style>
@@ -95,163 +57,81 @@ height:800px;
 
 <div class="header">
 
-NIFTY OPTIONS PRO TERMINAL V3
+NIFTY OPTIONS PROFESSIONAL DASHBOARD
 
 </div>
 
 <div class="grid">
 
 <div class="card">
+
+<h3>LIVE NIFTY PRICE</h3>
+
 <div class="tradingview-widget-container">
-  <div id="tradingview_nifty"></div>
-  <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-  <script type="text/javascript">
-  new TradingView.widget(
-  {
-  "width": "100%",
-  "height": 80,
-  "symbol": "NSE:NIFTY",
-  "interval": "1",
-  "timezone": "Asia/Kolkata",
-  "theme": "dark",
-  "style": "3",
-  "locale": "en",
-  "hide_top_toolbar": true,
-  "hide_legend": true,
-  "container_id": "tradingview_nifty"
-}
-  );
-  </script>
-</div>
-</div>
-
-<div class="card">
-<div class="label">ATM</div>
-<div id="atm" class="value"></div>
-</div>
-
-<div class="card">
-<div class="label">SUPPORT</div>
-<div id="support" class="value green"></div>
-</div>
-
-<div class="card">
-<div class="label">RESISTANCE</div>
-<div id="resistance" class="value red"></div>
-</div>
-
-<div class="card">
-<div class="label">PCR</div>
-<div id="pcr" class="value"></div>
-</div>
-
-<div class="card">
-<div class="label">MAX PAIN</div>
-<div id="maxpain" class="value"></div>
-</div>
-
-<div class="card">
-<div class="label">EXPIRY RANGE</div>
-<div id="range" class="value"></div>
-</div>
-
-<div class="card">
-<div class="label">BIAS</div>
-<div id="bias" class="value"></div>
-</div>
-
-<div class="card">
-<div class="label">SIGNAL</div>
-<div id="signal" class="value"></div>
-</div>
-
-<div class="card">
-<div class="label">UPDATE</div>
-<div id="time" class="value"></div>
-</div>
-
-</div>
-
-<div class="meter">
-<div id="sentiment" class="fill"></div>
-</div>
-
-<h3 style="text-align:center">OPTION HEAT MAP</h3>
-
-<table class="table">
-
-<tr>
-<th>Strike</th>
-<th>Call OI</th>
-<th>Put OI</th>
-</tr>
-
-<tr>
-<td>24100</td>
-<td style="color:red">2.1M</td>
-<td style="color:green">1.4M</td>
-</tr>
-
-<tr>
-<td>24200</td>
-<td style="color:red">3.2M</td>
-<td style="color:green">2.0M</td>
-</tr>
-
-<tr>
-<td>24300</td>
-<td style="color:red">3.9M</td>
-<td style="color:green">0.8M</td>
-</tr>
-
-</table>
-
-<h3 style="text-align:center">LIVE OPTION CHAIN</h3>
-
-<iframe src="https://www.moneycontrol.com/india/indexfutures/nifty/9/2024-06-27/OPTIDX/CE/24200"></iframe>
+<div id="tradingview_nifty"></div>
+<script src="https://s3.tradingview.com/tv.js"></script>
 
 <script>
-
-async function update(){
-
-try{
-
-const url =
-"https://api.allorigins.win/raw?url=https://query1.finance.yahoo.com/v7/finance/quote?symbols=%5ENSEI"
-
-const response = await fetch(url)
-
-const data = await response.json()
-
-const nifty = data.quoteResponse.result[0].regularMarketPrice
-
-const atm = Math.round(nifty/50)*50
-
-document.getElementById("nifty").innerText = nifty.toFixed(2)
-document.getElementById("atm").innerText = atm
-document.getElementById("support").innerText = atm-200
-document.getElementById("resistance").innerText = atm+200
-document.getElementById("pcr").innerText = "0.95"
-document.getElementById("maxpain").innerText = atm
-document.getElementById("range").innerText = (atm-200)+" - "+(atm+200)
-document.getElementById("signal").innerText = "WAIT"
-
-document.getElementById("time").innerText =
-new Date().toLocaleTimeString()
-
-}catch(err){
-
-console.log(err)
-
-}
-
-}
-
-update()
-
-setInterval(update,60000)
-
+new TradingView.widget({
+symbol: "NSE:NIFTY",
+interval: "1",
+timezone: "Asia/Kolkata",
+theme: "dark",
+style: "3",
+width: "100%",
+height: "80",
+locale: "en",
+container_id: "tradingview_nifty"
+});
 </script>
 
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>NIFTY CHART</h3>
+
+<div class="tradingview-widget-container">
+<div id="tradingview_chart"></div>
+
+<script>
+new TradingView.widget({
+symbol: "NSE:NIFTY",
+interval: "5",
+timezone: "Asia/Kolkata",
+theme: "dark",
+style: "1",
+width: "100%",
+height: "300",
+locale: "en",
+container_id: "tradingview_chart"
+});
+</script>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>OPTION CHAIN</h3>
+
+<iframe src="https://www.moneycontrol.com/india/indexfutures/nifty/9/2024-06-27/OPTIDX/CE/24000"></iframe>
+
+</div>
+
+<div class="card">
+
+<h3>OPTION HEATMAP</h3>
+
+<iframe src="https://www.moneycontrol.com/india/indexfutures/nifty/9/2024-06-27/OPTIDX/PE/24000"></iframe>
+
+</div>
+
+</div>
+
 </body>
+
 </html>
